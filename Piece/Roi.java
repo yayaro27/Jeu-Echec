@@ -49,8 +49,7 @@ public class Roi extends Piece
 	}
 	
 	public boolean deplacementPossible(Case a){
-		int x = this.getCase().getColonne();
-		int y = this.getCase().getLigne();
+		
 		if(a.getPiece() != null &&  this.getCouleur() == a.getPiece().getCouleur()) {
 	    	return false;
 		}
@@ -74,28 +73,38 @@ public class Roi extends Piece
 		return false;
 
     }
-	
-	public boolean estMAT(){
-		ArrayList<Piece> atester = this.getEchiquier().getAllPiece();
+	public ArrayList<Piece> QuiEchecRoi(){
+    	ArrayList<Piece> atester = this.getEchiquier().getAllPiece();
+    	ArrayList<Piece> a = new ArrayList<Piece>();
     	for(Piece pi : atester){
     		if(pi.getCase().getPiece() != null) {
-		    	if(pi.getCouleur() == this.getCouleur()) {
-		    		for(int i = 0 ; i< this.getEchiquier().echiquier.length; i++){
-		    			for(int j=0; j<this.getEchiquier().echiquier[i].length; j++){
-				    		if(pi.deplacementOk(this.getEchiquier().echiquier[j][i]) && pi.deplacementPossible(this.getEchiquier().echiquier[j][i])) {
-				    			if(this.estEchec() == false) {
-				    				return false;
-				    			}
-				    		
-				    		}
-		    			
-		    			}
-		    		}
-		    	}
+	    		if(pi.deplacementOk(this.getEchiquier().echiquier[this.getCase().getColonne()-1][this.getCase().getLigne()-1]) && pi.deplacementPossible(this.getEchiquier().echiquier[this.getCase().getColonne()-1][this.getCase().getLigne()-1])){
+	    			if(this.getCouleur() == true && pi.getCouleur() == false){
+	    				a.add(pi.getCase().getPiece());
+	    			}
+	    			if(this.getCouleur() == false && pi.getCouleur() == true){
+	    				a.add(pi.getCase().getPiece());
+	    			}
+	    		}
     		}
+    	}
+		return a;
+
+    }
+	
+	
+	public ArrayList<Case> CasesPossibles(){
+		ArrayList<Case> c = new ArrayList<Case>(); 
+		for(int i = 0 ; i< this.getEchiquier().echiquier.length; i++){
+			for(int j=0; j<this.getEchiquier().echiquier[i].length; j++){
+				if(this.deplacementOk(this.getEchiquier().echiquier[j][i]) == true && this.deplacementPossible(this.getEchiquier().echiquier[j][i]) == true) {
+					c.add(this.getEchiquier().echiquier[j][i]);
+				}
+			}
 		}
-    	return true;
+		return c;
 	}
+
 	
   
 }

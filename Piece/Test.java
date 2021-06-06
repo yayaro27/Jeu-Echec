@@ -12,13 +12,17 @@ public class Test
 		{
 			Partie p = new Partie();
 			p.initialiser();
-			p.jouer();
-			/*p.getEchiquier().affiche();
-			p.getEchiquier().placerPiece(7, 4, new Dame(true,p.getEchiquier()));
-			p.getEchiquier().placerPiece(5, 6, null);
+			//p.jouer();
+			//p.getEchiquier().affiche();
+			p.getEchiquier().placerPiece(7, 3, new Dame(false,p.getEchiquier()));
+			p.getEchiquier().placerPiece(5, 1, null);
+			//p.getEchiquier().placerPiece(3, 0, null);
+			//p.getEchiquier().placerPiece(3, 6, null);
+			//p.getEchiquier().placerPiece(0, 3, new Fou(true,p.getEchiquier()));
+			//p.getEchiquier().placerPiece(4, 6, null);
 			p.getEchiquier().affiche();
-			System.out.println(p.getRoiNoir().estEchec());
-			System.out.println(p.getRoiNoir().estMAT());*/
+		
+			System.out.println(p.estMATP2());
 			
 			
 			

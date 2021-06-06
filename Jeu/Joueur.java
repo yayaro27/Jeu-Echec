@@ -4,12 +4,10 @@ public class Joueur {
 
 	private  boolean couleur;
 	private  String nom;
-	
 
 	public Joueur(){
 	}
-	
-	
+
 	public Joueur(String nom,boolean c){
 		this.nom = nom;
 		this.couleur = c;

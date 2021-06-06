@@ -1,5 +1,6 @@
 package Jeu;
 
+import Save.Historique;
 import Piece.Roi;
 import java.util.Scanner;
 import Plateau.Echiquier;
@@ -16,7 +17,7 @@ public class Partie {
 	private Joueur joueurAuTrait;
 	private Roi roiNoir;
 	private Roi roiBlanc;
-	private ArrayList<Case> historique;
+	private Historique historique;
 	
 	public Partie()
 	{
@@ -34,7 +35,7 @@ public class Partie {
         this.joueurNoir = new Joueur("", false);
         this.joueurAuTrait = this.getJoueurBlanc();
         this.prises = new ArrayList<Piece>();
-        this.historique = new ArrayList<Case>();
+        this.historique = new Historique();
         this.echiquier = new Echiquier();
     	this.echiquier.initialisationEchiquier();
         this.setRois();
@@ -54,7 +55,7 @@ public class Partie {
         this.joueurNoir.setNom(b);
         this.joueurAuTrait = this.getJoueurBlanc();
         this.echiquier.affiche();
-		System.out.println( " Au joueur " + this.getJoueurBlanc().getNom() + " de commencer !"  );
+		System.out.println( " Au joueur des pieces blanches de commencer !"  );
 		while((this.getRoiNoir().estEchec() != true) && (this.getRoiBlanc().estEchec() != true))
 		{
 			System.out.println( "\n "  );
@@ -72,15 +73,75 @@ public class Partie {
 			
 			if(this.getEchiquier().echiquier[xdep-1][ydep-1].getPiece() != null) {
 				this.tourDeJeu(xdep, ydep, xarr, yarr);
-				this.historique.add(this.getEchiquier().echiquier[xdep-1][ydep-1]);
-				this.historique.add(this.getEchiquier().echiquier[xarr-1][yarr-1]);
-				this.afficherHistorique();
 			}else { System.out.println(" Erreur la case de Départ selectionée est vide");}
 		}
 		if(this.getRoiNoir().estEchec() == true)
 			System.out.println(" Fin de la partie , le joueur Blanc " + this.getJoueurBlanc().getNom() + " à gagner ! ");
 		else
 			System.out.println(" Fin de la partie , le joueur Noir " + this.getJoueurNoir().getNom() + " à gagner ! ");
+	}
+	
+	public boolean estMATP1(){
+		ArrayList<Case> a =new ArrayList<Case>();
+		ArrayList<Piece> atester1 = this.getEchiquier().getAllPieceBlanche();
+		ArrayList<Piece> atester2 = this.getEchiquier().getAllPieceNoire();
+		if(this.getRoiNoir().estEchec() == true ) {
+	    	for(Piece pi : atester1){
+	    		for(int i = 0 ; i<this.getRoiNoir().CasesPossibles().size() ; i++) {
+	    			if(pi.deplacementOk(this.getRoiNoir().CasesPossibles().get(i)) == true && pi.deplacementPossible(this.getRoiNoir().CasesPossibles().get(i))) {
+	    				a.add(this.getRoiNoir().CasesPossibles().get(i));
+	    			}
+	    			
+	    		}	
+	    		
+	    	}
+	    	if(a.size() != this.getRoiNoir().CasesPossibles().size()) {
+	    		return false;
+	    	}
+		}
+		if(this.getRoiBlanc().estEchec() == true ) {
+	    	for(Piece pi : atester2){
+	    		for(int i = 0 ; i<this.getRoiBlanc().CasesPossibles().size() ; i++) {
+	    			if(pi.deplacementOk(this.getRoiBlanc().CasesPossibles().get(i)) == true && pi.deplacementPossible(this.getRoiBlanc().CasesPossibles().get(i))) {
+	    				a.add(this.getRoiBlanc().CasesPossibles().get(i));
+	    			}
+	    			
+	    		}	
+	    		
+	    	}
+	    	if(a.size() != this.getRoiBlanc().CasesPossibles().size()) {
+	    		return false;
+	    	}
+		}
+		return true;
+	}
+	
+	public boolean estMATP2(){
+		ArrayList<Piece> atester1 = this.getEchiquier().getAllPieceBlanche();
+		ArrayList<Piece> atester2 = this.getEchiquier().getAllPieceNoire();
+		if(this.getRoiNoir().estEchec() == true ) {
+			for(Piece pi : atester2){
+				for(int i = 0 ; i<this.getRoiNoir().QuiEchecRoi().size(); i++) {
+					for(int j = 0 ; i<this.getRoiNoir().QuiEchecRoi().get(i).CasesPossibles().size(); j++) {
+						if(pi.deplacementOk(this.getRoiNoir().QuiEchecRoi().get(i).CasesPossibles().get(j)) && pi.deplacementPossible(this.getRoiNoir().QuiEchecRoi().get(i).CasesPossibles().get(j))) {
+							return false;
+						}
+					}
+				}
+			}
+		}
+		if(this.getRoiBlanc().estEchec() == true ) {
+			for(Piece pi : atester1){
+				for(int i = 0 ; i<this.getRoiBlanc().QuiEchecRoi().size()-1; i++) {
+					for(int j = 0 ; i<this.getRoiBlanc().QuiEchecRoi().get(i).CasesPossibles().size(); j++) {
+						if(pi.deplacementOk(this.getRoiBlanc().QuiEchecRoi().get(i).CasesPossibles().get(j)) && pi.deplacementPossible(this.getRoiBlanc().QuiEchecRoi().get(i).CasesPossibles().get(j))) {
+							return false;
+						}
+					}
+				}
+			}
+		}
+	return true;
 	}
 	
 	public void switchJoueurAuTrait(){
@@ -141,17 +202,23 @@ public class Partie {
 				if (this.echiquier.echiquier[xdep-1][ydep-1].getPiece().deplacementPossible(this.echiquier.echiquier[xarr-1][yarr-1]) == true) {
 					if(this.echiquier.getCase(this.echiquier.echiquier[xarr-1][yarr-1]).getPiece() != null ) {
 						this.prises.add(this.echiquier.echiquier[xarr-1][yarr-1].getPiece());
+						this.historique.addCase(this.getEchiquier().echiquier[xdep-1][ydep-1]);
+						this.historique.addCase(this.getEchiquier().echiquier[xarr-1][yarr-1]);
 						this.echiquier.placerPiece(xarr-1, yarr-1, this.echiquier.getCase(this.echiquier.echiquier[xdep-1][ydep-1]).getPiece());
 						this.echiquier.placerPiece(xdep-1, ydep-1, null);
 						this.switchJoueurAuTrait();
 						this.echiquier.affiche();
+						this.historique.afficherHistorique();
 						this.afficherPrises();
 						
 					}else {
+						this.historique.addCase(this.getEchiquier().echiquier[xdep-1][ydep-1]);
+						this.historique.addCase(this.getEchiquier().echiquier[xarr-1][yarr-1]);
 						this.echiquier.placerPiece(xarr-1, yarr-1, this.echiquier.getCase(this.echiquier.echiquier[xdep-1][ydep-1]).getPiece());
 						this.echiquier.placerPiece(xdep-1, ydep-1, null);
 						this.switchJoueurAuTrait();
 						this.echiquier.affiche();
+						this.historique.afficherHistorique();
 						
 					}
 				}else System.out.println(" Deplacement impossible !");
@@ -177,22 +244,7 @@ public class Partie {
 		System.out.println("... ]");
 	}
 	
-	public void afficherHistorique(){
-		System.out.print(" Liste des derniers coups : [");
-		for(int i=0; i<historique.size(); i++){
-			if( i % 2 == 0) {
-				System.out.print(historique.get(i).getNomColonne());
-				System.out.print(historique.get(i).getLigne()+ "-");
-			}
-			else {
-				System.out.print(historique.get(i).getNomColonne());
-				System.out.print(historique.get(i).getLigne()+ ", ");
-			}
-		}
-		System.out.println(" ...]");
-	}
-	
-	
+
 	
 	public void setRois(){
     	for(int i = 0; i < this.getEchiquier().echiquier.length; i++){

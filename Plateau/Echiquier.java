@@ -151,6 +151,33 @@ public class Echiquier
 	   return p;
 	 }
 	
+	 public ArrayList<Piece> getAllPieceBlanche(){
+	    	ArrayList<Piece> p = new ArrayList<Piece>();
+	    	for(int i=0; i<echiquier.length;i++){
+	    		for(int j=0; j<echiquier.length;j++){
+	    			if(this.getCase(echiquier[i][j]).getPiece() != null){
+	    				if(this.getCase(echiquier[i][j]).getPiece().getCouleur() == true){
+	    					p.add(this.getCase(echiquier[i][j]).getPiece());
+	    				}
+	    			}
+	    		}
+	    	}
+	   return p;
+	 }
+	 
+	 public ArrayList<Piece> getAllPieceNoire(){
+	    	ArrayList<Piece> p = new ArrayList<Piece>();
+	    	for(int i=0; i<echiquier.length;i++){
+	    		for(int j=0; j<echiquier.length;j++){
+	    			if(this.getCase(echiquier[i][j]).getPiece() != null){
+	    				if(this.getCase(echiquier[i][j]).getPiece().getCouleur() == false){
+	    					p.add(this.getCase(echiquier[i][j]).getPiece());
+	    				}
+	    			}
+	    		}
+	    	}
+	   return p;
+	 }
 }	
 	
 
