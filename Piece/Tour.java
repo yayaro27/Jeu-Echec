@@ -6,29 +6,33 @@ import Plateau.Echiquier;
 public class Tour extends Piece
 {
 	public String nom = "Tour";
+	//Constructeur avec Case en parametre
 	public Tour(boolean couleur, Case c, Echiquier echiquier)
 	{
 		super(couleur, c , echiquier) ;
-		
-	}
-
+		}
+	//Constructeur sans Case en parametre
 	public Tour(boolean couleur, Echiquier echiquier)
 	{
 		super(couleur, echiquier) ;
 		
 	}
-	
+	//recupere le nom de cette piece
 	public String getNom() {
 		return this.nom;
 	}
-
-
-
+	
+	//Affichage de la Tour
 	public String toString()
 	{
-		return super.toString() + ", plus particulierement une Tour" ;
+		if(this.getCouleur() == true) {
+			return super.toString() + "Tb" ;
+		}
+		else {
+			return super.toString() + "Tn" ;
+		}
 	}
-			
+	//Verifie que le coup est bien conforme a celui d'une Tour
 	public boolean deplacementOk(Case a)
 	{
 		
@@ -45,7 +49,7 @@ public class Tour extends Piece
 	    }
 	    return false;
 	}
-	
+	//Verifie si le chemin de la piece est libre
 	 public boolean deplacementPossible(Case a ){
 		 	int x = a.getColonne();
 		 	int y = a.getLigne();

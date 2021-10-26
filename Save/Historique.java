@@ -13,7 +13,7 @@ public class Historique {
 
 		this.historique = new ArrayList<Case>();
 	}
-	
+	//affiche l'historique des coups dans la console
 	public void afficherHistorique(){
 		System.out.print(" Liste des derniers coups : [");
 		for(int i=0; i<historique.size(); i++){
@@ -27,7 +27,7 @@ public class Historique {
 		}
 		System.out.println(" ...]");
 	}
-
+	//ajoute une case a la liste
 	public void addCase(Case c){
 		historique.add(c);
 	}

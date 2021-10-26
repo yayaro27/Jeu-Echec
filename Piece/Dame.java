@@ -5,31 +5,39 @@ import Plateau.Echiquier;
 
 public class Dame extends Piece
 {
-	public String nom = "Dame";
+	
+	private String nom = "Dame";
+	//Constructeur avec Case en parametre
 	public Dame(boolean couleur, Case c, Echiquier echiquier)
 	{
 		super(couleur, c , echiquier) ;
-		
-	}
 
+	}
+	
+	//Constructeur sans Case en parametre
 	public Dame(boolean couleur, Echiquier echiquier)
 	{
 		super(couleur, echiquier) ;
-		
-	}
 
+	}
+	//recupere le nom de cette piece
 	public String getNom() {
 		return this.nom;
 	}
-
+	
+	
+	//Affichage de la Dame
 	public String toString()
 	{
-		return super.toString() + ", plus particulierement une Dame" ;
+		if(this.getCouleur() == true) {
+			return super.toString() + "Db" ;
+		}
+		else {
+			return super.toString() + "Dn" ;
+		}
 	}
 
-
-			// return true si le deplacement depuis la case de  depart a la case d'arrive est conforme
-			// au deplacement d'une Dame
+	//Verifie que le coup est bien conforme a celui d'une Dame	
 	public boolean deplacementOk(Case a)
 	{
 		for(int i = 0;i <=8;i++)
@@ -56,14 +64,14 @@ public class Dame extends Piece
     	}
     	return false;
     }
+	
+	//Verifie si le chemin de la piece est libre
 	public boolean deplacementPossible(Case a){
 		int x = a.getColonne();
 	 	int y = a.getLigne();
-	 	
 	 	if(a.getPiece() != null &&  this.getCouleur() == a.getPiece().getCouleur()) {
 	    	return false;
 	    }
-	 	
 	 	if(this.getCase().getColonne() != x && this.getCase().getLigne() != y){   
        	
        	if(x>this.getCase().getColonne() && y>this.getCase().getLigne()){

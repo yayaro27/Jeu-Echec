@@ -1,67 +1,80 @@
 package Piece;
 
+
 import Plateau.Case;
 import Plateau.Echiquier;
 
 public class Pion extends Piece
 {
+
 	private boolean premierCoup = true;
 	public String nom = "Pion";
-	
+	//Constructeur avec Case en parametre
 	public Pion(boolean couleur, Case c, Echiquier echiquier)
 	{
 		super(couleur, c , echiquier) ;
 		
 	}
-
+	//Constructeur sans Case en parametre
 	public Pion(boolean couleur, Echiquier echiquier)
 	{
 		super(couleur, echiquier) ;
 		
 	}
-	
+	//recupere le nom de cette piece
 	public String getNom() {
 		return this.nom;
 	}
 
-	
+	//Affichage du Pion
 	public String toString()
 	{
-		return super.toString() + ", plus particulierement un Pion" ;
+		if(this.getCouleur() == true) {
+			return super.toString() + "Pb" ;
+		}
+		else {
+			return super.toString() + "Pn" ;
+		}
 	}
-	
+	//recupere true si le premierCoup de cette n'est pas encore jouer
 	public boolean getPremierCoup(){
     	return this.premierCoup;
     }
     
-   
+	//met le boolean en parametre dans premier
     public void setPremierCoup(boolean b){
     	this.premierCoup = b;
     }
-
-
+    
+    
 	
+
+  //Verifie que le coup est bien conforme a celui d'un Pion
 	public boolean deplacementOk(Case a)
 	{
 		
 		int x = a.getColonne();
 	 	int y = a.getLigne();
-		if(x < 0 || x > 7 || y < 0 || y  > 7) return false;
+		if(x < 1 || x > 8 || y < 1 || y  > 8) return false;
 		  
 		if(this.getEchiquier().getCase(a).getPiece() == null){
 		
 		    		if(this.getCouleur() == true){
 			            if(a.getColonne()==this.getCase().getColonne() && a.getLigne() == this.getCase().getLigne()+2 && premierCoup==true){
-			                return true;
+			            	this.setPremierCoup(false);
+			            	return true;
 			            }
 			    		if(a.getColonne()==this.getCase().getColonne() && a.getLigne() == this.getCase().getLigne()+1){
+			    			this.setPremierCoup(false);
 			    			return true;
 			    		}
 			    	}else{
 			            if(a.getColonne()==this.getCase().getColonne() && a.getLigne() == this.getCase().getLigne()-2 && premierCoup==true){
+			            	this.setPremierCoup(false);
 			                return true;
 			            }
 			    		if(a.getColonne()==this.getCase().getColonne() && a.getLigne()== this.getCase().getLigne()-1){
+			    			this.setPremierCoup(false);
 			    			return true;
 			    		}
 			    	}
@@ -69,16 +82,20 @@ public class Pion extends Piece
 		}else{
 		    		if(this.getCouleur() == true){
 		    			if(a.getColonne() == this.getCase().getColonne()+1 && a.getLigne() == this.getCase().getLigne() +1){
+		    				this.setPremierCoup(false);
 		        			return true;
 		        		}
 		    			if(a.getColonne() == this.getCase().getColonne()-1 && a.getLigne() == this.getCase().getLigne() +1){
+		    				this.setPremierCoup(false);
 		        			return true;
 		        		}
 		    		}else{
 		    			if(a.getColonne() == this.getCase().getColonne()-1 && a.getLigne() == this.getCase().getLigne() -1){
+		    				this.setPremierCoup(false);
 		        			return true;
 		        		}
 		    			if(a.getColonne() == this.getCase().getColonne()+1 && a.getLigne() == this.getCase().getLigne()-1){
+		    				this.setPremierCoup(false);
 		        			return true;
 		        		}
 		    		}
@@ -87,7 +104,7 @@ public class Pion extends Piece
 		    	return false;
 	}
 	
-	
+	//Verifie si le chemin de la piece est libre
 	 public boolean deplacementPossible(Case a){
 		 	int x = a.getColonne();
 		 	int y = a.getLigne();
