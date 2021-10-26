@@ -167,7 +167,7 @@ public class Partie {
 
 		
 
-	//Test ayant pour but de voir si une piece peut s'interper entre le roi et la piece qui met en echec le roi.
+	//(Non fonctionnelle pour le moment !!) Test ayant pour but de voir si une piece peut s'interposer entre le roi et la piece qui met en echec le roi.
 	public boolean estMATP2(){
 		ArrayList<Piece> atester1 = this.getEchiquier().getAllPieceBlanche();
 		ArrayList<Piece> atester2 = this.getEchiquier().getAllPieceNoire();
